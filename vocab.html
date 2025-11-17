@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Словарь</h1>
+
+<form action="/add" method="post" class="p-4 bg-white/60 rounded-2xl shadow-sm space-y-2">
+  <div class="flex gap-2">
+    <select name="type" class="p-2 rounded">
+      <option value="word">Слово</option>
+      <option value="phrase">Фраза</option>
+    </select>
+    <input name="text" placeholder="Текст" class="flex-1 p-2 rounded" required>
+    <input name="translation" placeholder="Перевод" class="flex-1 p-2 rounded" required>
+    <input name="tags" placeholder="Теги" class="p-2 rounded">
+    <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded">Добавить</button>
+  </div>
+</form>
+
+<div class="mt-4 space-y-3">
+  {% for w in words %}
+  <div class="p-3 bg-white/60 rounded-lg shadow-sm flex justify-between items-start">
+    <div>
+      <div class="text-lg font-medium">{{ w.text }} <span class="text-sm text-slate-500">{{ w.type }}</span></div>
+      <div class="text-slate-700">{{ w.translation }}</div>
+      <div class="text-xs text-slate-500 mt-2">Теги: {{ w.tags or '—' }}</div>
+      <div class="text-xs text-slate-400 mt-1">След. повтор: {{ w.next_review or 'сейчас' }}</div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <a href="/review/{{ w.id }}/true" class="px-2 py-1 rounded bg-green-600 text-white text-center">Знал</a>
+      <a href="/review/{{ w.id }}/false" class="px-2 py-1 rounded bg-red-600 text-white text-center">Не знал</a>
+      <a href="/delete/{{ w.id }}" class="px-2 py-1 rounded border text-red-600 text-center">Удалить</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bg-white p-6 rounded-2xl shadow-md max-w-md mx-auto">
+  <h1 class="text-xl font-semibold mb-4">Регистрация</h1>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="space-y-2 mb-4">
+        {% for cat, msg in messages %}
+          <div class="text-sm {{ 'text-red-600' if cat == 'error' else 'text-green-600' }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  <form method="post">
+    <label class="block text-sm mb-1">Username</label>
+    <input name="username" class="w-full p-2 border rounded mb-3" />
+    <label class="block text-sm mb-1">Email (необязательно)</label>
+    <input name="email" class="w-full p-2 border rounded mb-3" />
+    <label class="block text-sm mb-1">Пароль</label>
+    <input type="password" name="password" class="w-full p-2 border rounded mb-4" />
+    <div class="flex justify-between items-center">
+      <button class="px-4 py-2 bg-primary text-white rounded">Зарегистрироваться</button>
+      <a href="/login" class="text-sm text-slate-500">Уже есть аккаунт?</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

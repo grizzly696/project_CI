@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title or "Трекер изучения языков" }}</title>
+
+  <!-- ✅ Подключаем TailwindCSS с CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 🎨 Настройка темы и шрифта -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            primary: '#3b82f6', // голубой для акцентов
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- 🩵 Шрифт Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- 📈 Chart.js для графика прогресса -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-100 to-slate-50 text-slate-800 font-sans p-8">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-6 gap-6">
+    
+    <!-- Боковое меню -->
+    <aside class="md:col-span-1 bg-white/60 backdrop-blur p-5 rounded-2xl shadow-md flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-semibold mb-6 text-slate-800">📘 Tracker</h2>
+        <nav class="flex flex-col gap-2">
+          <a href="/" class="p-2 rounded-lg hover:bg-slate-100 transition">📊 Dashboard</a>
+          <a href="/vocab" class="p-2 rounded-lg hover:bg-slate-100 transition">📚 Словарь</a>
+          <a href="/quiz" class="p-2 rounded-lg hover:bg-slate-100 transition">🧠 Быстрый тест</a>
+        </nav>
+        <div class="mt-4">
+          {% if session.get('user') %}
+            <div class="text-sm text-slate-600">Привет, {{ session.get('user') }}</div>
+            <a href="/logout" class="text-sm text-primary hover:underline">Выйти</a>
+          {% else %}
+            <div class="flex gap-2 mt-2">
+              <a href="/login" class="px-3 py-1 rounded bg-primary text-white text-sm">Вход</a>
+              <a href="/register" class="px-3 py-1 rounded border text-sm">Регистрация</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="mt-8 text-xs text-slate-400 text-center">
+        © 2025 Language Tracker
+      </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="md:col-span-5 space-y-6">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

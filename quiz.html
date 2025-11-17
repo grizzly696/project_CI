@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Быстрый тест</h1>
+
+<div class="p-4 bg-white/60 rounded-2xl shadow-sm space-y-4">
+  {% for w in words %}
+  <div class="p-3 border rounded">
+    <div class="text-lg font-medium">{{ w.text }}</div>
+    <div class="text-slate-500 mb-2">Введите перевод:</div>
+    <input type="text" class="p-2 rounded w-full" data-correct="{{ w.translation }}">
+  </div>
+  {% endfor %}
+  <button id="check" class="px-4 py-2 bg-slate-800 text-white rounded">Проверить</button>
+</div>
+
+<script>
+document.getElementById("check").onclick = () => {
+  document.querySelectorAll("input").forEach(inp => {
+    if (inp.value.trim().toLowerCase() === inp.dataset.correct.toLowerCase()) {
+      inp.classList.add("bg-green-100");
+    } else {
+      inp.classList.add("bg-red-100");
+    }
+  });
+};
+</script>
+{% endblock %}

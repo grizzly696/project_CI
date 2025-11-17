@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">📊 Дашборд</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <div class="p-6 bg-white/70 backdrop-blur rounded-2xl shadow-md hover:shadow-lg transition">
+    <div class="text-sm text-slate-500">Всего слов</div>
+    <div class="text-3xl font-semibold">{{ total }}</div>
+  </div>
+  <div class="p-6 bg-white/70 backdrop-blur rounded-2xl shadow-md hover:shadow-lg transition">
+    <div class="text-sm text-slate-500">На повторении</div>
+    <div class="text-3xl font-semibold">{{ due }}</div>
+  </div>
+  <div class="p-6 bg-white/70 backdrop-blur rounded-2xl shadow-md hover:shadow-lg transition">
+    <div class="text-sm text-slate-500 mb-2">История (последние 10)</div>
+    <ul class="text-sm space-y-1">
+      {% for r in recent %}
+      <li class="text-slate-700">{{ r.text }} — {{ r.last_review.strftime('%Y-%m-%d %H:%M') if r.last_review else '—' }}</li>
+      {% else %}
+      <li class="text-slate-400 italic">Пока нет записей</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- 📈 График прогресса -->
+<div class="p-6 bg-white/70 backdrop-blur rounded-2xl shadow-md">
+  <h2 class="text-xl font-semibold mb-4">Динамика повторений</h2>
+  <canvas id="progressChart" height="100"></canvas>
+</div>
+
+<script>
+  const ctx = document.getElementById('progressChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {{ labels|tojson }},
+      datasets: [{
+        label: 'Повторено слов',
+        data: {{ values|tojson }},
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.2)',
+        borderWidth: 2,
+        tension: 0.3,
+        fill: true,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+</script>
+{% endblock %}
